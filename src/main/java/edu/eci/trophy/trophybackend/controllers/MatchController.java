@@ -15,14 +15,13 @@ import java.util.List;
 @Service
 @CrossOrigin(origins = "http://localhost:3000")
 public class MatchController {
-    @Autowired
-    private final UserService userService;
+
 
     @Autowired
     private final MatchService matchServiceService;
 
-    public MatchController(UserService userService, MatchService matchService) {
-        this.userService = userService;
+    public MatchController( MatchService matchService) {
+
         this.matchServiceService = matchService;
     }
 
