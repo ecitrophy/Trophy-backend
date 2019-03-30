@@ -1,4 +1,4 @@
-package edu.eci.trophy.trophybackend.models;
+package edu.eci.trophy.model;
 
 public class User {
     private String id;

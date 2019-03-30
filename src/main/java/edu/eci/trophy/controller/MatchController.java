@@ -1,8 +1,8 @@
-package edu.eci.trophy.trophybackend.controllers;
+package edu.eci.trophy.controller;
 
-import edu.eci.trophy.trophybackend.models.Match;
-import edu.eci.trophy.trophybackend.services.MatchService;
-import edu.eci.trophy.trophybackend.services.UserService;
+import edu.eci.trophy.model.Match;
+import edu.eci.trophy.service.MatchService;
+import edu.eci.trophy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;

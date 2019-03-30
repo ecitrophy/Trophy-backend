@@ -1,4 +1,4 @@
-package edu.eci.trophy.trophybackend.controllers;
+package edu.eci.trophy.controller;
 
 
 import org.springframework.web.bind.annotation.RestController;

@@ -1,7 +1,7 @@
-package edu.eci.trophy.trophybackend.services.impl;
+package edu.eci.trophy.services.impl;
 
-import edu.eci.trophy.trophybackend.models.Match;
-import edu.eci.trophy.trophybackend.services.MatchService;
+import edu.eci.trophy.model.Match;
+import edu.eci.trophy.service.MatchService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;

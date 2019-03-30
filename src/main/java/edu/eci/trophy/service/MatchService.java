@@ -1,6 +1,6 @@
-package edu.eci.trophy.trophybackend.services;
+package edu.eci.trophy.service;
 
-import edu.eci.trophy.trophybackend.models.Match;
+import edu.eci.trophy.model.Match;
 
 import java.util.List;
 
