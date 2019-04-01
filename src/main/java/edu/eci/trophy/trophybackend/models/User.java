@@ -1,22 +1,23 @@
 package edu.eci.trophy.trophybackend.models;
 
 public class User {
-    private String id;
     private String name;
     private String email;
-
-    public User(String id, String name, String email) {
-        this.id = id;
+    private String password;
+    private String userName;
+    public User(String username, String name, String email, String password) {
+        this.userName = username;
         this.name = name;
         this.email = email;
+        this.password=password;
+    }
+    
+    public String getUserName() {
+        return userName;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String userName) {
+        this.userName = userName;
     }
 
     public String getName() {
@@ -33,5 +34,12 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+     public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
