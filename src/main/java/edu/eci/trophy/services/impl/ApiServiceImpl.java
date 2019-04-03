@@ -40,50 +40,7 @@ public class ApiServiceImpl implements ApiService {
 
     @Override
     public Player getPlayer(String name) throws TrophyException {
-        Player playerCache = searchPlayerDb(name);
-        if (playerCache == null) {
-            String response = api.getPlayerInfo(name);
-            JsonParser jsonParser = new JsonParser();
-            JsonObject jsonObject = (JsonObject) jsonParser.parse(response);
-            Player player = new Player(name, jsonObject.get("accountId").getAsString());
-            playerRepo.save(player);
-            playerCache = player;
-        }
-        return playerCache;
-    }
-
-    public Player getHistory(Player player) throws TrophyException {
-        String response = api.getMatches(player.getAccountId());
-        JsonParser jsonParser = new JsonParser();
-        JsonObject jsonObject = (JsonObject) jsonParser.parse(response);
-        player.setTotalGames(jsonObject.get("totalGames").getAsInt());
-        JsonArray jsonArray = jsonObject.getAsJsonArray("matches");
-        for (int i = 0; i < jsonArray.size() && i == 0; i++) {
-//            System.out.println("---" + jsonArray.get(i) + "---");
-            JsonParser jsonParser2 = new JsonParser();
-            JsonObject jsonObject2 = (JsonObject) jsonParser2.parse(jsonArray.get(i).toString());
-//            System.out.println("-*-" + jsonObject2.get("gameId") + "-*-" + jsonObject2.get("timestamp"));
-            player.setLastGame(new PlayerMatch(jsonObject2.get("gameId").getAsInt(), jsonObject2.get("timestamp").getAsLong()));
-        }
-        playerRepo.save(player);
-        return player;
-    }
-
-    public void getGameDetail(Player player) throws TrophyException {
-        String response = api.getMatchDetail(player.getLastGame().getGameId());
-        JsonParser jsonParser = new JsonParser();
-        JsonObject jsonObject = (JsonObject) jsonParser.parse(response);
-        player.getLastGame().setGameEnding(jsonObject.get("gameDuration").getAsLong());
-    }
-
-    public Player searchPlayerDb(String name) {
-        Player playerCache = null;
-        try {
-            playerCache = playerRepo.findByName(name);
-        } catch (Exception e) {
-            Logger.getLogger(ApiServiceImpl.class.getName()).log(Level.SEVERE, "Jugador duplicado en DB", e);
-        }
-        return playerCache;
+        return api.getPlayerInfo(name);
     }
 
 }

@@ -24,20 +24,4 @@ public interface Api {
      */
     public Player getPlayerInfo(String userName) throws TrophyException;
 
-    /**
-     *
-     * @param accountId
-     * @return
-     * @throws TrophyException
-     */
-    public String getMatches(String accountId) throws TrophyException;
-
-    /**
-     *
-     * @param gameId
-     * @return
-     * @throws TrophyException
-     */
-    public String getMatchDetail(Integer gameId) throws TrophyException;
-
 }

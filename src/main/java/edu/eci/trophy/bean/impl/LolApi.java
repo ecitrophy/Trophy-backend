@@ -36,7 +36,7 @@ public class LolApi implements Api {
 
     public LolApi() {
         this.season = 13;
-        this.apiKey = "RGAPI-1e7ceffd-0339-4c44-9e4f-221b54e33503";
+        this.apiKey = "RGAPI-1dc04062-4c41-4f24-9548-cd4148051ebe";
     }
 
     @Override
@@ -53,13 +53,15 @@ public class LolApi implements Api {
                 JsonParser jsonParser = new JsonParser();
                 JsonObject jsonObject = (JsonObject) jsonParser.parse(response);
                 player = new Player(userName, jsonObject.get("accountId").getAsString());
-
             } catch (IOException ex) {
                 Logger.getLogger(LolApi.class.getName()).log(Level.SEVERE, "Method getAccountId, Param: " + userName, ex);
             }
         }
         try {
             player = getLastMatch(player);
+            if (!player.getLastGame().getGameId().equals(-1)) {
+                player = getMatchDetail(player);
+            }
         } catch (IOException ex) {
             Logger.getLogger(LolApi.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,30 +69,69 @@ public class LolApi implements Api {
         return player;
     }
 
-    public Player getLastMatch(Player player) throws TrophyException, IOException {
+    /**
+     * 
+     * @param player
+     * @return
+     * @throws TrophyException
+     * @throws IOException 
+     */
+    private Player getLastMatch(Player player) throws TrophyException, IOException {
         String response = HttpConnection.getUrlData("https://la1.api.riotgames.com/lol/match/v4/matchlists/by-account/" + player.getAccountId() + "?season=" + season + "&api_key=" + apiKey);
         JsonParser jsonParser = new JsonParser();
         JsonObject jsonObject = (JsonObject) jsonParser.parse(response);
         player.setTotalGames(jsonObject.get("totalGames").getAsInt());
-        JsonArray jsonArray = jsonObject.getAsJsonArray("matches");
-        for (int i = 0; i < jsonArray.size() && i == 0; i++) {
+        JsonArray matches = jsonObject.getAsJsonArray("matches");
+        int matchesSize = matches.size();
+        if (matchesSize > 0) {
+            for (int i = 0; i < matchesSize && i == 0; i++) {
 //            System.out.println("---" + jsonArray.get(i) + "---");
-            JsonParser jsonParser2 = new JsonParser();
-            JsonObject jsonObject2 = (JsonObject) jsonParser2.parse(jsonArray.get(i).toString());
+                JsonParser jsonParser2 = new JsonParser();
+                JsonObject jsonObject2 = (JsonObject) jsonParser2.parse(matches.get(i).toString());
 //            System.out.println("-*-" + jsonObject2.get("gameId") + "-*-" + jsonObject2.get("timestamp"));
-            player.setLastGame(new PlayerMatch(jsonObject2.get("gameId").getAsInt(), jsonObject2.get("timestamp").getAsLong()));
+                player.setLastGame(new PlayerMatch(jsonObject2.get("gameId").getAsInt(), jsonObject2.get("timestamp").getAsLong()));
+            }
+        } else {
+            player.setLastGame(new PlayerMatch(-1, -1, -1, false));
         }
+
         return player;
     }
 
-    public String getMatchDetail(Integer gameId) throws TrophyException {
-        String response = null;
-        try {
-            response = HttpConnection.getUrlData("https://la1.api.riotgames.com/lol/match/v4/matches/" + gameId + "?api_key=" + apiKey);
-        } catch (IOException ex) {
-            Logger.getLogger(LolApi.class.getName()).log(Level.SEVERE, null, ex);
+    /**
+     * 
+     * @param player
+     * @return
+     * @throws TrophyException
+     * @throws IOException 
+     */
+    private Player getMatchDetail(Player player) throws TrophyException, IOException {
+        String response = HttpConnection.getUrlData("https://la1.api.riotgames.com/lol/match/v4/matches/" + player.getLastGame().getGameId() + "?api_key=" + apiKey);
+        JsonParser jsonParser = new JsonParser();
+        JsonObject jsonObject = (JsonObject) jsonParser.parse(response);
+        long gameDuration = jsonObject.get("gameDuration").getAsLong() * 1000 + player.getLastGame().getGameCreation();
+        player.getLastGame().setGameEnding(gameDuration);
+        JsonArray participantIdentities = jsonObject.getAsJsonArray("participantIdentities");
+        boolean founded = false;
+        int totalParticipants = participantIdentities.size();
+        for (int i = 0; i < totalParticipants && !founded; i++) {
+            JsonParser jsonParser2 = new JsonParser();
+            JsonObject participantX = (JsonObject) jsonParser2.parse(participantIdentities.get(i).toString());
+            if (participantX.get("player").getAsJsonObject().get("accountId").getAsString().equals(player.getAccountId())) {
+                founded = true;
+                int participantId = participantX.get("participantId").getAsInt();
+                JsonArray teams = jsonObject.getAsJsonArray("teams");
+                JsonParser jsonParser3 = new JsonParser();
+                if (participantId > (totalParticipants / 2)) {
+                    JsonObject team = (JsonObject) jsonParser3.parse(teams.get(1).toString());
+                    player.getLastGame().setWin(team.get("win").getAsString().equals("Win"));
+                } else {
+                    JsonObject team = (JsonObject) jsonParser3.parse(teams.get(0).toString());
+                    player.getLastGame().setWin(team.get("win").getAsString().equals("Win"));
+                }
+            }
         }
-        return response;
+        return player;
     }
 
 }

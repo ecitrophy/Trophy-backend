@@ -6,6 +6,7 @@
 package edu.eci.trophy.bean.impl;
 
 import edu.eci.trophy.bean.Api;
+import edu.eci.trophy.model.Player;
 import edu.eci.trophy.model.TrophyException;
 import org.springframework.stereotype.Service;
 
@@ -17,17 +18,7 @@ import org.springframework.stereotype.Service;
 public class BnbApi implements Api {
 
     @Override
-    public String getPlayerInfo(String userName) throws TrophyException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String getMatches(String accountId) throws TrophyException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public String getMatchDetail(int gameId) throws TrophyException {
+    public Player getPlayerInfo(String userName) throws TrophyException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

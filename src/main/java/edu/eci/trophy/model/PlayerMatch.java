@@ -19,9 +19,16 @@ public class PlayerMatch {
     public PlayerMatch() {
     }
 
-    public PlayerMatch(Integer gameId, long timestamp) {
+    public PlayerMatch(Integer gameId, long gameCreation) {
         this.gameId = gameId;
-        this.gameCreation = timestamp;
+        this.gameCreation = gameCreation;
+    }
+
+    public PlayerMatch(Integer gameId, long gameCreation, long gameEnding, boolean win) {
+        this.gameId = gameId;
+        this.gameCreation = gameCreation;
+        this.gameEnding = gameEnding;
+        this.win = win;
     }
 
     public Integer getGameId() {
