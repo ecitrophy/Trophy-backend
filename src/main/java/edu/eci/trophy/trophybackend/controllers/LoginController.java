@@ -14,8 +14,9 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/user")
+
 @CrossOrigin(origins = "*")
-public class AccountController {
+public class LoginController {
 
     @Autowired
     private UserService userService;
