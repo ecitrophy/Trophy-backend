@@ -7,3 +7,5 @@ heroku: https://gentle-wave-71675.herokuapp.com/
 GET /matcheslist
 
 POST /matcheslist
+
+GET /apilol/{username}
