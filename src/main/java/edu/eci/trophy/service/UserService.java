@@ -1,14 +1,8 @@
-package edu.eci.trophy.trophybackend.services;
+package edu.eci.trophy.service;
 
-
-
-import edu.eci.trophy.trophybackend.models.User;
-import java.util.List;
-
+import edu.eci.trophy.model.User;
 
 public interface UserService {
-
-    
 
     User getUser(String username) throws TrophyException;
 

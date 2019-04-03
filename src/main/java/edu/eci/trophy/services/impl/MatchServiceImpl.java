@@ -1,7 +1,7 @@
-package edu.eci.trophy.trophybackend.services.impl;
+package edu.eci.trophy.services.impl;
 
-import edu.eci.trophy.trophybackend.models.Match;
-import edu.eci.trophy.trophybackend.services.MatchService;
+import edu.eci.trophy.model.Match;
+import edu.eci.trophy.service.MatchService;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,12 +15,12 @@ public class MatchServiceImpl implements MatchService {
 
     public MatchServiceImpl() {
         HashMap<String, Integer> bettors = new HashMap<>();
-        bettors.put("user1",15);
-        bettors.put("user2",0);
-        bettors.put("user3",15);
-        bettors.put("user4",15);
-        bettors.put("user5",15);
-        this.matchesList.add(new Match("LOL Match","juan.gomez345", bettors, "WaitingForBets", null, 1   ));
+        bettors.put("user1", 15);
+        bettors.put("user2", 0);
+        bettors.put("user3", 15);
+        bettors.put("user4", 15);
+        bettors.put("user5", 15);
+        this.matchesList.add(new Match("LOL Match", "juan.gomez345", bettors, "WaitingForBets", null, 1));
     }
 
     @Override

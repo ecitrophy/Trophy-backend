@@ -12,5 +12,4 @@ public class TrophyBackendApplicationTests {
 	@Test
 	public void contextLoads() {
 	}
-
 }

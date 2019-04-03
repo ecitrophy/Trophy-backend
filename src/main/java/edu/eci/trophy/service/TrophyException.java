@@ -1,4 +1,4 @@
-package edu.eci.trophy.trophybackend.services;
+package edu.eci.trophy.service;
 
 public class TrophyException extends Exception {
 
@@ -9,5 +9,8 @@ public class TrophyException extends Exception {
         super(message);
     }
 
+    public TrophyException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
 }

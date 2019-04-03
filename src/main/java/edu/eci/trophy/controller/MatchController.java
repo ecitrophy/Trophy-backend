@@ -1,8 +1,7 @@
-package edu.eci.trophy.trophybackend.controllers;
+package edu.eci.trophy.controller;
 
-import edu.eci.trophy.trophybackend.models.Match;
-import edu.eci.trophy.trophybackend.services.MatchService;
-import edu.eci.trophy.trophybackend.services.UserService;
+import edu.eci.trophy.model.Match;
+import edu.eci.trophy.service.MatchService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,30 +15,28 @@ import java.util.List;
 @CrossOrigin("*")
 public class MatchController {
 
-
     @Autowired
     private final MatchService matchServiceService;
 
-    public MatchController( MatchService matchService) {
+    public MatchController(MatchService matchService) {
 
         this.matchServiceService = matchService;
     }
 
     @RequestMapping("/matcheslist")
-    public List<Match> getMatches(){
+    public List<Match> getMatches() {
         return matchServiceService.getMatchesList();
     }
 
     @PostMapping("/matcheslist")
-    public ResponseEntity<?> getMatches(@RequestBody Match match){
+    public ResponseEntity<?> getMatches(@RequestBody Match match) {
         try {
             matchServiceService.addMatch(match);
 
             return new ResponseEntity<>(HttpStatus.CREATED);
-        }catch(Exception e){
+        } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
 }

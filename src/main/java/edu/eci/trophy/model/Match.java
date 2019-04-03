@@ -1,7 +1,6 @@
-package edu.eci.trophy.trophybackend.models;
+package edu.eci.trophy.model;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class Match {
 
@@ -32,6 +31,7 @@ public class Match {
     public String getCreator() {
         return creator;
     }
+
     public void setCreator(String creator) {
         this.creator = creator;
     }
