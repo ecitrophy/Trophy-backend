@@ -55,6 +55,19 @@ public class LoginController {
 
         return new Token( jwtToken );
     }
+    @RequestMapping( value = "/register", method = RequestMethod.POST )
+    public void register( @RequestBody User register )
+            throws ServletException
+    {
+        if(register.getEmail()!=null&&register.getName()!=null&&register.getPassword()!=null&&register.getUserName()!=null)
+        try{
+            userService.createUser(register);
+        }
+        catch(Exception e){
+            throw new ServletException( "Invalid data while creation user" );
+        }
+       
+    }
 
     public class Token
     {
