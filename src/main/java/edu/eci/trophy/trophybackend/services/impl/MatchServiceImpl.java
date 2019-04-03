@@ -37,4 +37,9 @@ public class MatchServiceImpl implements MatchService {
     public List<Match> getMatchByUserId(String id) {
         return null;
     }
+
+    @Override
+    public void addMatch(Match m) {
+        matchesList.add(m);
+    }
 }

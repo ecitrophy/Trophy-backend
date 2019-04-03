@@ -9,5 +9,6 @@ public interface MatchService {
     List<Match> getMatchesList();
     Match getMatchById(String id);
     List<Match> getMatchByUserId(String id);
+    void addMatch(Match m);
 
 }
