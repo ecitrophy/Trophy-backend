@@ -13,13 +13,12 @@ public class Match {
     private int id;
     private int currentBet;
 
-    public Match(String name, String creator, List<HashMap<String, String>> bettors, String state, String winner, int id, int currentBet) {
+    public Match(String name, String creator, List<HashMap<String, String>> bettors, String state, String winner, int currentBet) {
         this.name = name;
         this.creator = creator;
         this.bettors = bettors;
         this.state = state;
         this.winner = winner;
-        this.id = id;
         this.currentBet = currentBet;
     }
 

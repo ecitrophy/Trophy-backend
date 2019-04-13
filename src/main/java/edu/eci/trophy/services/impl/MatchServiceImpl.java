@@ -32,7 +32,7 @@ public class MatchServiceImpl implements MatchService {
         bettors.add(bettor2);
         bettors.add(bettor3);
 
-        this.matchesList.add(new Match("LOL test-backend", "juan.gomez345", bettors, "WaitingForBets", null, 0, 45));
+        this.matchesList.add(new Match("LOL test-backend", "juan.gomez345", bettors, "WaitingForBets", null, 45));
     }
 
     @Override
@@ -54,6 +54,8 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public void addMatch(Match m) {
+        int id= matchesList.size();
+        m.setId(id);
         matchesList.add(m);
     }
 }
