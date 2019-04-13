@@ -12,18 +12,28 @@ public class Match {
     private String winner;
     private int id;
     private int currentBet;
+    private String game;
 
-    public Match(String name, String creator, List<HashMap<String, String>> bettors, String state, String winner, int currentBet) {
+    public Match(String name, String creator, List<HashMap<String, String>> bettors, String state, String winner, int currentBet, String game) {
         this.name = name;
         this.creator = creator;
         this.bettors = bettors;
         this.state = state;
         this.winner = winner;
         this.currentBet = currentBet;
+        this.game = game;
     }
 
     public Match(){
 
+    }
+
+    public String getGame() {
+        return game;
+    }
+
+    public void setGame(String game) {
+        this.game = game;
     }
 
     public String getName() {

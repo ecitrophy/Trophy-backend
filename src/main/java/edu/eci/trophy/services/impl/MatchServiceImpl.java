@@ -32,7 +32,7 @@ public class MatchServiceImpl implements MatchService {
         bettors.add(bettor2);
         bettors.add(bettor3);
 
-        this.matchesList.add(new Match("LOL test-backend", "juan.gomez345", bettors, "WaitingForBets", null, 45));
+        this.matchesList.add(new Match("LOL test-backend", "juan.gomez345", bettors, "WaitingForBets", null, 45, "League Of Legends"));
     }
 
     @Override
