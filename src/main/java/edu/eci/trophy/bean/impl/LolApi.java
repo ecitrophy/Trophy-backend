@@ -36,7 +36,7 @@ public class LolApi implements Api {
 
     public LolApi() {
         this.season = 13;
-        this.apiKey = "RGAPI-1dc04062-4c41-4f24-9548-cd4148051ebe";
+        this.apiKey = "RGAPI-1030a826-82db-43c0-bc70-c38e07c36e7c";
     }
 
     @Override
@@ -52,7 +52,7 @@ public class LolApi implements Api {
                 String response = HttpConnection.getUrlData("https://la1.api.riotgames.com/lol/summoner/v4/summoners/by-name/" + userName + "?api_key=" + apiKey);
                 JsonParser jsonParser = new JsonParser();
                 JsonObject jsonObject = (JsonObject) jsonParser.parse(response);
-                player = new Player(userName, jsonObject.get("accountId").getAsString());
+                player = new Player(userName, jsonObject.get("accountId").getAsString(), jsonObject.get("id").getAsString());
             } catch (IOException ex) {
                 Logger.getLogger(LolApi.class.getName()).log(Level.SEVERE, "Method getAccountId, Param: " + userName, ex);
             }
