@@ -8,8 +8,10 @@ public interface UserService {
 
     User createUser(User user) throws TrophyException;
 
-    User updateUser(User user);
+    User updateUser(User user) throws TrophyException;
 
     void removeUser(String userId);
+
+
 
 }

@@ -16,8 +16,8 @@ public class UserServiceStub implements UserService {
     public UserServiceStub() {
         this.UserMap = new HashMap<>();
         try {
-            this.createUser(new User("JuanJoAndrade", "Juan José Andrade", "juanjo@gmail.com", "qwerty"));
-            this.createUser(new User("CapoTrophy", "Capo de Trophy", "capo@gmail.com", "qwerty"));
+            this.createUser(new User("JuanJoAndrade", "Juan José Andrade", "juanjo@gmail.com", "qwerty", 1450));
+            this.createUser(new User("CapoTrophy", "Capo de Trophy", "capo@gmail.com", "qwerty", 999999999));
         } catch (TrophyException e) {
             e.printStackTrace();
         }
@@ -44,8 +44,13 @@ public class UserServiceStub implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
+    public User updateUser(User user) throws TrophyException {
+        if (UserMap.containsKey(user.getEmail())) {
 
+            user.setPassword(UserMap.get(user.getEmail()).getPassword());
+        } else {
+            throw new TrophyException(TrophyException.NOT_FOUND);
+        }
         UserMap.replace(user.getEmail(), user);
         return user;
     }

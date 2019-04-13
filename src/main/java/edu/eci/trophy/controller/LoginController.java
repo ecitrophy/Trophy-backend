@@ -36,6 +36,7 @@ public class LoginController {
         User user;
         try {
             user = userService.getUser(email);
+
         } catch (TrophyException e) {
             throw new ServletException("User email not found.");
         }

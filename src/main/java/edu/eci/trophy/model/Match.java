@@ -1,23 +1,30 @@
 package edu.eci.trophy.model;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class Match {
 
     private String name;
     private String creator;
-    private HashMap<String, Integer> bettors;
+    private List<HashMap<String, String>> bettors;
     private String state;
     private String winner;
     private int id;
+    private int currentBet;
 
-    public Match(String name, String creator, HashMap<String, Integer> bettors, String state, String winner, int id) {
+    public Match(String name, String creator, List<HashMap<String, String>> bettors, String state, String winner, int id, int currentBet) {
         this.name = name;
         this.creator = creator;
         this.bettors = bettors;
         this.state = state;
         this.winner = winner;
         this.id = id;
+        this.currentBet = currentBet;
+    }
+
+    public Match(){
+
     }
 
     public String getName() {
@@ -36,11 +43,11 @@ public class Match {
         this.creator = creator;
     }
 
-    public HashMap<String, Integer> getBettors() {
+    public List<HashMap<String, String>> getBettors() {
         return bettors;
     }
 
-    public void setBettors(HashMap<String, Integer> bettors) {
+    public void setBettors(List<HashMap<String, String>> bettors) {
         this.bettors = bettors;
     }
 
@@ -66,5 +73,13 @@ public class Match {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getCurrentBet() {
+        return currentBet;
+    }
+
+    public void setCurrentBet(int currentBet) {
+        this.currentBet = currentBet;
     }
 }

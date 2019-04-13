@@ -14,22 +14,36 @@ public class MatchServiceImpl implements MatchService {
     private List<Match> matchesList = new ArrayList<>();
 
     public MatchServiceImpl() {
-        HashMap<String, Integer> bettors = new HashMap<>();
-        bettors.put("user1", 15);
-        bettors.put("user2", 0);
-        bettors.put("user3", 15);
-        bettors.put("user4", 15);
-        bettors.put("user5", 15);
-        this.matchesList.add(new Match("LOL Match", "juan.gomez345", bettors, "WaitingForBets", null, 1));
+        List<HashMap<String, String>> bettors =  new ArrayList<>();
+
+        HashMap<String, String> bettor = new HashMap<>();
+        bettor.put("username", "test-backend1");
+        bettor.put("bet", "15");
+        HashMap<String, String> bettor2 = new HashMap<>();
+        bettor2.put("username", "test-backend2");
+        bettor2.put("bet", "15");
+
+        HashMap<String, String> bettor3 = new HashMap<>();
+        bettor3.put("username", "test-backend3");
+        bettor3.put("bet", "15");
+
+
+        bettors.add(bettor);
+        bettors.add(bettor2);
+        bettors.add(bettor3);
+
+        this.matchesList.add(new Match("LOL test-backend", "juan.gomez345", bettors, "WaitingForBets", null, 0, 45));
     }
 
     @Override
     public List<Match> getMatchesList() {
+
         return matchesList;
     }
 
     @Override
     public Match getMatchById(String id) {
+
         return matchesList.get(Integer.parseInt(id));
     }
 

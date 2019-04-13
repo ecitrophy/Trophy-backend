@@ -6,12 +6,14 @@ public class User {
     private String email;
     private String password;
     private String userName;
+    private int trophyPoints;
 
-    public User(String username, String name, String email, String password) {
+    public User(String username, String name, String email, String password, int trophyPoints) {
         this.userName = username;
         this.name = name;
         this.email = email;
         this.password = password;
+        this.trophyPoints = trophyPoints;
     }
 
     public User() {
@@ -20,6 +22,18 @@ public class User {
     public User(String email, String password) {
         this.email = email;
         this.password = password;
+    }
+
+    public int getTrophyPoints() {
+        return trophyPoints;
+    }
+
+    public void setTrophyPoints(int trophyPoints) {
+        this.trophyPoints = trophyPoints;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public String getUserName() {

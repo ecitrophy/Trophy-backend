@@ -21,6 +21,24 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @RequestMapping("/{id}")
+    public User getUser(@PathVariable("id") String id) {
+        try{
+            return userService.getUser(id);
+        }catch(Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<?> updateUser(@RequestBody User user) {
+        try {
+            return new ResponseEntity<>(userService.updateUser(user), HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody User user) {
         try {

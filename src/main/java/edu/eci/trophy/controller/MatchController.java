@@ -28,6 +28,12 @@ public class MatchController {
         return matchServiceService.getMatchesList();
     }
 
+    @RequestMapping("/matcheslist/{id}")
+    public Match getMatchById(@PathVariable("id") String id) {
+
+        return  matchServiceService.getMatchById(id);
+    }
+
     @PostMapping("/matcheslist")
     public ResponseEntity<?> getMatches(@RequestBody Match match) {
         try {
@@ -38,5 +44,4 @@ public class MatchController {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
