@@ -14,14 +14,14 @@ public class User {
     }
 
     public User(String email, String password) {
-        this.email = email;
+        this.email = email.toLowerCase();
         this.password = password;
     }
 
     public User(String username, String name, String email, String password, int trophyPoints) {
-        this.userName = username;
+        this.userName = username.toLowerCase();
         this.name = name;
-        this.email = email;
+        this.email = email.toLowerCase();
         this.password = password;
         this.trophyPoints = trophyPoints;
     }
@@ -35,7 +35,7 @@ public class User {
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.userName = userName.toLowerCase();
     }
 
     public String getUserName() {

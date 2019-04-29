@@ -34,7 +34,7 @@ public class ApiController {
         try {
             response = new ResponseEntity<>(apiSer.getPlayer(name.replaceAll("\\s+", "").toLowerCase()), HttpStatus.ACCEPTED);
         } catch (TrophyException ex) {
-            Logger.getLogger(ApiController.class.getName()).log(Level.SEVERE, "Api controller, get player, param: " + name, ex);
+            Logger.getLogger(ApiController.class.getName()).log(Level.SEVERE, "Api controller, get player, param: " + name);
             response = new ResponseEntity<>("Al parecer no existe un jugador con el nombre: " + name, HttpStatus.NOT_FOUND);
         }
         return response;

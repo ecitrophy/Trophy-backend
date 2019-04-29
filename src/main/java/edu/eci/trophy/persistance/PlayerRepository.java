@@ -8,5 +8,5 @@ import org.springframework.data.mongodb.repository.MongoRepository;
  */
 public interface PlayerRepository extends MongoRepository<Player, String> {
 
-    public Player findByName(String name);
+    Player findByName(String name);
 }

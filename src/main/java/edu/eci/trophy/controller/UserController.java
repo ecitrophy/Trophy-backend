@@ -15,22 +15,28 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @RequestMapping(method = RequestMethod.GET, path = "/username/{userName}")
-    public ResponseEntity<?> getPlayer(@PathVariable("userName") String userName) {
-
+    @RequestMapping(method = RequestMethod.GET, path = "/{userName}")
+    public ResponseEntity<?> getUserByUserName(@PathVariable("userName") String userName) {
+        ResponseEntity<?> response;
+        try {
+            response = new ResponseEntity<>(userService.getUserByUserName(userName), HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            response = new ResponseEntity<>("Al parecer no existe un usuario con el nombre: " + userName, HttpStatus.NOT_FOUND);
+        }
+        return response;
     }
 
-    @RequestMapping("/{id}")
+    @RequestMapping("/email/{id}")
     public User getUser(@PathVariable("id") String id) {
         try{
-            return userService.getUser(id);
+            return userService.getUserByEmail(id);
         }catch(Exception e){
             e.printStackTrace();
             return null;
         }
     }
 
-    @PostMapping("/{id}")
+    @PutMapping
     public ResponseEntity<?> updateUser(@RequestBody User user) {
         try {
             return new ResponseEntity<>(userService.updateUser(user), HttpStatus.ACCEPTED);

@@ -20,9 +20,6 @@ public class ApiServiceImpl implements ApiService {
     @Qualifier("Lol")
     Api api;
 
-    @Autowired
-    PlayerRepository playerRepo;
-
     @Override
     public Player getPlayer(String name) throws TrophyException {
         return api.getPlayerInfo(name);

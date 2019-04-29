@@ -4,9 +4,11 @@ import edu.eci.trophy.model.User;
 
 public interface UserService {
 
-    User getUser(String username) throws TrophyException;
+    User getUserByUserName(String userName);
 
-    User createUser(User user) throws TrophyException;
+    User getUserByEmail(String email) throws TrophyException;
+
+    User createUser(User newUser) throws TrophyException;
 
     User updateUser(User user) throws TrophyException;
 

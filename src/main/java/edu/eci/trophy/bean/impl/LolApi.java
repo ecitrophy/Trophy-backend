@@ -12,14 +12,14 @@ import edu.eci.trophy.bean.Api;
 import edu.eci.trophy.model.HttpConnection;
 import edu.eci.trophy.model.Player;
 import edu.eci.trophy.model.PlayerMatch;
-import edu.eci.trophy.service.TrophyException;
 import edu.eci.trophy.persistance.PlayerRepository;
-import edu.eci.trophy.services.impl.ApiServiceImpl;
+import edu.eci.trophy.service.TrophyException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 /**
  *
@@ -45,7 +45,7 @@ public class LolApi implements Api {
         try {
             player = playerRepo.findByName(userName);
         } catch (Exception e) {
-            Logger.getLogger(ApiServiceImpl.class.getName()).log(Level.SEVERE, "Jugador duplicado en DB", e);
+            Logger.getLogger(LolApi.class.getName()).log(Level.SEVERE, "Jugador duplicado en DB");
         }
         if (player == null) {
             try {
@@ -54,7 +54,7 @@ public class LolApi implements Api {
                 JsonObject jsonObject = (JsonObject) jsonParser.parse(response);
                 player = new Player(userName, jsonObject.get("accountId").getAsString(), jsonObject.get("id").getAsString());
             } catch (IOException ex) {
-                Logger.getLogger(LolApi.class.getName()).log(Level.SEVERE, "Method getAccountId, Param: " + userName, ex);
+                Logger.getLogger(LolApi.class.getName()).log(Level.SEVERE, "Method getAccountId, Param: " + userName);
             }
         }
         try {
