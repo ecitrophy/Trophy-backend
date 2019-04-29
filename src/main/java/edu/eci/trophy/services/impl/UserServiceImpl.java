@@ -6,9 +6,6 @@ import edu.eci.trophy.service.TrophyException;
 import edu.eci.trophy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.validation.constraints.NotNull;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -17,8 +14,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepo;
-
-    private Map<String, User> UserMap;
 
 //    public UserServiceImpl() {
 //        this.UserMap = new HashMap<>();
@@ -43,40 +38,48 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByEmail(String email) throws TrophyException {
-        if (UserMap.containsKey(email)) {
-            return UserMap.get(email);
-        } else {
-            throw new TrophyException(TrophyException.NOT_FOUND);
+        User user = null;
+        try {
+            user = userRepo.findByEmail(email.toLowerCase());
+        } catch (Exception e) {
+            Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, "UserServiceImpl, getUserByEmail, param: " + email);
         }
+        return user;
     }
 
     @Override
     public User createUser(User newUser) throws TrophyException {
-        System.out.println(newUser.toString());
         String userName = newUser.getUserName();
-        if (getUserByUserName(userName) != null) {
-            throw new TrophyException("El usuario: " + userName + " ya existe.");
+        String userEmail = newUser.getEmail();
+        if (getUserByUserName(userName) != null || getUserByEmail(userEmail) != null) {
+            throw new TrophyException("El usuario con el nombre o correo: " + userName + " - " + userEmail + " ya existe.");
         }
         userRepo.save(newUser);
-        System.out.println(newUser.toString());
         return newUser;
     }
 
     @Override
     public User updateUser(User user) throws TrophyException {
-        if (UserMap.containsKey(user.getEmail())) {
-
-            user.setPassword(UserMap.get(user.getEmail()).getPassword());
-        } else {
-            throw new TrophyException(TrophyException.NOT_FOUND);
+        String userName = user.getUserName();
+        String userEmail = user.getEmail();
+        User oldUser = getUserByUserName(userName);
+        if (oldUser == null) {
+            throw new TrophyException("El usuario: " + userName + " no existe.");
         }
-        UserMap.replace(user.getEmail(), user);
+        user.setId(oldUser.getId());
+        user.setEmail(oldUser.getEmail());
+        userRepo.save(user);
         return user;
     }
 
     @Override
-    public void removeUser(String mail) {
-        UserMap.remove(mail);
+    public String removeUser(String userName) throws TrophyException {
+        User user = getUserByUserName(userName);
+        if (user == null) {
+            throw new TrophyException("El usuario: " + userName + " no existe o ya fue eliminado.");
+        }
+        userRepo.delete(user);
+        return user.getId();
     }
 
 }

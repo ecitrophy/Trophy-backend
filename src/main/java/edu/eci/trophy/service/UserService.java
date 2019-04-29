@@ -12,8 +12,6 @@ public interface UserService {
 
     User updateUser(User user) throws TrophyException;
 
-    void removeUser(String userId);
-
-
+    String removeUser(String userId) throws TrophyException;
 
 }

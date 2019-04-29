@@ -1,9 +1,10 @@
 package edu.eci.trophy.model;
 
+import javax.validation.constraints.NotNull;
+
 public class User {
 
-    public String id;
-
+    private String id;
     private String name;
     private String email;
     private String password;
@@ -26,6 +27,14 @@ public class User {
         this.trophyPoints = trophyPoints;
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public int getTrophyPoints() {
         return trophyPoints;
     }
@@ -34,16 +43,12 @@ public class User {
         this.trophyPoints = trophyPoints;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName.toLowerCase();
-    }
-
     public String getUserName() {
         return userName;
     }
 
-    public void setId(String userName) {
-        this.userName = userName;
+    public void setUserName(String userName) {
+        this.userName = userName.toLowerCase();
     }
 
     public String getName() {
@@ -59,7 +64,7 @@ public class User {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase();
     }
 
     public String getPassword() {

@@ -26,13 +26,23 @@ public class UserController {
         return response;
     }
 
-    @RequestMapping("/email/{id}")
-    public User getUser(@PathVariable("id") String id) {
-        try{
-            return userService.getUserByEmail(id);
-        }catch(Exception e){
-            e.printStackTrace();
-            return null;
+    @RequestMapping("/email/{e}")
+    public ResponseEntity<?> getUserByEmail(@PathVariable("e") String email) {
+        ResponseEntity<?> response;
+        try {
+            response = new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            response = new ResponseEntity<>("Al parecer no existe un usuario con el correo: " + email, HttpStatus.NOT_FOUND);
+        }
+        return response;
+    }
+
+    @PostMapping
+    public ResponseEntity<?> createUser(@RequestBody User user) {
+        try {
+            return new ResponseEntity<>(userService.createUser(user), HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
@@ -44,20 +54,11 @@ public class UserController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
-    @PostMapping
-    public ResponseEntity<?> createUser(@RequestBody User user) {
-        try {
-            return new ResponseEntity<>(userService.createUser(user), HttpStatus.ACCEPTED);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        }
-    }
 
-    @DeleteMapping("/{email}")
-    public ResponseEntity<?> deleteUser(@PathVariable String email) {
+    @DeleteMapping("/{userName}")
+    public ResponseEntity<?> deleteUser(@PathVariable String userName) {
         try {
-            userService.removeUser(email);
-            return new ResponseEntity<>(HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(userService.removeUser(userName), HttpStatus.ACCEPTED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
