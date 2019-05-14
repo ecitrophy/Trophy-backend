@@ -14,6 +14,6 @@ public interface ApiService {
      * @return
      * @throws edu.eci.trophy.service.TrophyException
      */
-    public Player getPlayer(String name) throws TrophyException;
+    Player getPlayer(String name) throws TrophyException;
 
 }

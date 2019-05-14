@@ -1,20 +1,32 @@
 package edu.eci.trophy.services.impl;
 
+import edu.eci.trophy.model.Game;
 import edu.eci.trophy.model.Match;
+import edu.eci.trophy.model.MatchStatus;
+import edu.eci.trophy.model.User;
+import edu.eci.trophy.persistance.MatchRepository;
 import edu.eci.trophy.service.MatchService;
-import org.springframework.stereotype.Component;
+import edu.eci.trophy.service.TrophyException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-@Component
+@Service
 public class MatchServiceImpl implements MatchService {
 
-    private List<Match> matchesList = new ArrayList<>();
+    @Autowired
+    MatchRepository matchRepo;
 
-    public MatchServiceImpl() {
-        List<HashMap<String, String>> bettors =  new ArrayList<>();
+    //private List<Match> matchesList = new ArrayList<>();
+
+    /*public MatchServiceImpl() {
+        List<HashMap<String, String>> bettors = new ArrayList<>();
 
         HashMap<String, String> bettor = new HashMap<>();
         bettor.put("username", "test-backend1");
@@ -32,30 +44,48 @@ public class MatchServiceImpl implements MatchService {
         bettors.add(bettor2);
         bettors.add(bettor3);
 
-        this.matchesList.add(new Match("LOL test-backend", "juan.gomez345", bettors, "WaitingForBets", null, 45, "League Of Legends"));
-    }
+        this.matchesList.add(new Match("LOL test-backend", Game.LEAGUEOFLEGENDS, 5000, new User("TestUser1", "Test User", "test@trophy.com", "ieti2019"), MatchStatus.OPEN));
+    }*/
 
     @Override
     public List<Match> getMatchesList() {
-
-        return matchesList;
+        return matchRepo.findAll();
     }
 
     @Override
-    public Match getMatchById(String id) {
-
-        return matchesList.get(Integer.parseInt(id));
+    public List<Match> getMatchByGame(String game) throws TrophyException {
+        try {
+            Game.valueOf(game.toUpperCase());
+            return matchRepo.findByGame(game);
+        } catch (Exception e) {
+            Logger.getLogger(MatchServiceImpl.class.getName()).log(Level.SEVERE, "MatchServiceImpl, getMatchByGame, param: " + game);
+            throw new TrophyException("El juego : " + game + " no existe.");
+        }
     }
 
     @Override
-    public List<Match> getMatchByUserId(String id) {
-        return null;
+    public List<Match> getMatchByMinimumBet(Integer minimumBet) throws TrophyException {
+        try {
+            return matchRepo.findByMinimumBet(minimumBet);
+        } catch (Exception e) {
+            Logger.getLogger(MatchServiceImpl.class.getName()).log(Level.SEVERE, "MatchServiceImpl, getMatchByMinimumBet, param: " + minimumBet);
+            throw new TrophyException("No hay apuestas con el monto de: " + minimumBet + " TP");
+        }
     }
 
     @Override
-    public void addMatch(Match m) {
-        int id= matchesList.size();
-        m.setId(id);
-        matchesList.add(m);
+    public Optional<Match> getMatchById(String id) throws TrophyException {
+        try {
+            return matchRepo.findById(id);
+        } catch (Exception e) {
+            Logger.getLogger(MatchServiceImpl.class.getName()).log(Level.SEVERE, "MatchServiceImpl, getMatchById, param: " + id);
+            throw new TrophyException("La partida con el Id: " + id + " no existe.");
+        }
+    }
+
+    @Override
+    public Match createMatch(Match match) {
+        matchRepo.save(match);
+        return match;
     }
 }

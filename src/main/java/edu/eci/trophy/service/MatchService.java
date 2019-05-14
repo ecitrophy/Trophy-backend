@@ -3,15 +3,18 @@ package edu.eci.trophy.service;
 import edu.eci.trophy.model.Match;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface MatchService {
 
     List<Match> getMatchesList();
 
-    Match getMatchById(String id);
+    List<Match> getMatchByGame(String game) throws TrophyException;
 
-    List<Match> getMatchByUserId(String id);
+    List<Match> getMatchByMinimumBet(Integer minimumBet)throws TrophyException;
 
-    void addMatch(Match m);
+    Optional<Match> getMatchById(String id) throws TrophyException;
+
+    Match createMatch(Match m);
 
 }

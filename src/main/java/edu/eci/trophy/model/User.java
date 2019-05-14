@@ -1,6 +1,7 @@
 package edu.eci.trophy.model;
 
-import javax.validation.constraints.NotNull;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class User {
 
@@ -10,13 +11,17 @@ public class User {
     private String password;
     private String userName;
     private int trophyPoints;
+    private Map<String, UserBet> bets = new ConcurrentHashMap<String, UserBet>();
 
     public User() {
     }
 
-    public User(String email, String password) {
+    public User(String username, String name, String email, String password) {
+        this.userName = username.toLowerCase();
+        this.name = name;
         this.email = email.toLowerCase();
         this.password = password;
+        this.trophyPoints = 0;
     }
 
     public User(String username, String name, String email, String password, int trophyPoints) {
@@ -75,6 +80,14 @@ public class User {
         this.password = password;
     }
 
+    public Map<String, UserBet> getBets() {
+        return bets;
+    }
+
+    public void setBets(Map<String, UserBet> bets) {
+        this.bets = bets;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -84,6 +97,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", userName='" + userName + '\'' +
                 ", trophyPoints=" + trophyPoints +
+                ", bets=" + bets +
                 '}';
     }
 }

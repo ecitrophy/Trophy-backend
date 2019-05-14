@@ -1,39 +1,37 @@
 package edu.eci.trophy.model;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Match {
 
+    private String id;
     private String name;
-    private String creator;
-    private List<HashMap<String, String>> bettors;
-    private String state;
-    private String winner;
-    private int id;
-    private int currentBet;
-    private String game;
+    private Game game;
+    private Integer minimumBet;
+    private User creator;
+    private MatchStatus state;
+    private List<User> bettors = new ArrayList<>();
+    private List<User> winner = new ArrayList<>();
 
-    public Match(String name, String creator, List<HashMap<String, String>> bettors, String state, String winner, int currentBet, String game) {
+    public Match() {
+    }
+
+    public Match(String name, Game game, Integer minimumBet, User creator, MatchStatus state) {
         this.name = name;
+        this.game = game;
+        this.minimumBet = minimumBet;
         this.creator = creator;
-        this.bettors = bettors;
+        this.bettors.add(creator);
         this.state = state;
-        this.winner = winner;
-        this.currentBet = currentBet;
-        this.game = game;
     }
 
-    public Match(){
-
+    public String getId() {
+        return id;
     }
 
-    public String getGame() {
-        return game;
-    }
-
-    public void setGame(String game) {
-        this.game = game;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -44,51 +42,51 @@ public class Match {
         this.name = name;
     }
 
-    public String getCreator() {
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public Integer getMinimumBet() {
+        return minimumBet;
+    }
+
+    public void setMinimumBet(Integer minimumBet) {
+        this.minimumBet = minimumBet;
+    }
+
+    public User getCreator() {
         return creator;
     }
 
-    public void setCreator(String creator) {
+    public void setCreator(User creator) {
         this.creator = creator;
     }
 
-    public List<HashMap<String, String>> getBettors() {
-        return bettors;
-    }
-
-    public void setBettors(List<HashMap<String, String>> bettors) {
-        this.bettors = bettors;
-    }
-
-    public String getState() {
+    public MatchStatus getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(MatchStatus state) {
         this.state = state;
     }
 
-    public String getWinner() {
+    public List<User> getBettors() {
+        return bettors;
+    }
+
+    public void setBettors(List<User> bettors) {
+        this.bettors = bettors;
+    }
+
+    public List<User> getWinner() {
         return winner;
     }
 
-    public void setWinner(String winner) {
+    public void setWinner(List<User> winner) {
         this.winner = winner;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getCurrentBet() {
-        return currentBet;
-    }
-
-    public void setCurrentBet(int currentBet) {
-        this.currentBet = currentBet;
     }
 }

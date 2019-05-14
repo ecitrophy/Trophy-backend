@@ -61,7 +61,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User updateUser(User user) throws TrophyException {
         String userName = user.getUserName();
-        String userEmail = user.getEmail();
         User oldUser = getUserByUserName(userName);
         if (oldUser == null) {
             throw new TrophyException("El usuario: " + userName + " no existe.");
