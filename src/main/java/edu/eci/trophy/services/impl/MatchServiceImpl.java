@@ -55,7 +55,8 @@ public class MatchServiceImpl implements MatchService {
     @Override
     public List<Match> getMatchByGame(String game) throws TrophyException {
         try {
-            Game.valueOf(game.toUpperCase());
+            game = game.toUpperCase();
+            Game.valueOf(game);
             return matchRepo.findByGame(game);
         } catch (Exception e) {
             Logger.getLogger(MatchServiceImpl.class.getName()).log(Level.SEVERE, "MatchServiceImpl, getMatchByGame, param: " + game);
