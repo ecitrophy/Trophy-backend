@@ -45,11 +45,11 @@ public class HttpConnection {
             // print result
             return response.toString();
         } else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
-            throw new TrophyException("Nombre de usuario no valido.");
+            throw new TrophyException("Data not foun");
         } else if (responseCode == HttpURLConnection.HTTP_FORBIDDEN) {
-            throw new TrophyException("Api key vencida.");
+            throw new TrophyException("Api key vencida");
         } else {
-            throw new TrophyException("Error en los parametros de la peticion.");
+            throw new TrophyException("Error en los parametros de la peticion");
         }
         //System.out.println("GET DONE");
     }

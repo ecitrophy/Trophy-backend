@@ -13,6 +13,7 @@ public class Match {
     private MatchStatus state;
     private List<User> bettors = new ArrayList<>();
     private List<User> winner = new ArrayList<>();
+    private GameMatch gameMatch;
 
     public Match() {
     }
@@ -88,5 +89,28 @@ public class Match {
 
     public void setWinner(List<User> winner) {
         this.winner = winner;
+    }
+
+    public GameMatch getGameMatch() {
+        return gameMatch;
+    }
+
+    public void setGameMatch(GameMatch gameMatch) {
+        this.gameMatch = gameMatch;
+    }
+
+    @Override
+    public String toString() {
+        return "Match{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", game=" + game +
+                ", minimumBet=" + minimumBet +
+                ", creator=" + creator +
+                ", state=" + state +
+                ", bettors=" + bettors +
+                ", winner=" + winner +
+                ", gameMatch=" + gameMatch +
+                '}';
     }
 }

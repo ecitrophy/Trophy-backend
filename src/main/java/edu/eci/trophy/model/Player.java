@@ -7,12 +7,9 @@ package edu.eci.trophy.model;
 public class Player {
 
     public String id;
-
     private String name;
     private String accountId;
     private String summonerId;
-    private Integer totalGames;
-    private PlayerMatch lastGame;
 
     public Player() {
     }
@@ -21,6 +18,14 @@ public class Player {
         this.name = name;
         this.accountId = accountId;
         this.summonerId = summonerId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -47,25 +52,13 @@ public class Player {
         this.summonerId = summonerId;
     }
 
-    public Integer getTotalGames() {
-        return totalGames;
-    }
-
-    public void setTotalGames(Integer totalGames) {
-        this.totalGames = totalGames;
-    }
-
-    public PlayerMatch getLastGame() {
-        return lastGame;
-    }
-
-    public void setLastGame(PlayerMatch lastGame) {
-        this.lastGame = lastGame;
-    }
-
     @Override
     public String toString() {
-        return String.format("Player[id=%s, name='%s', accountId='%s', summonerId='%s', totalGames='%d', lastGame=" + lastGame.toString() + "]", id, name, accountId, summonerId, totalGames);
+        return "Player{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", accountId='" + accountId + '\'' +
+                ", summonerId='" + summonerId + '\'' +
+                '}';
     }
-
 }

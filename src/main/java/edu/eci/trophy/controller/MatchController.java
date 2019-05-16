@@ -64,7 +64,7 @@ public class MatchController {
     }
 
     @PostMapping
-    public ResponseEntity<?> getMatches(@RequestBody Match match) {
+    public ResponseEntity<?> createMatch(@RequestBody Match match) {
         try {
             return new ResponseEntity<>(matchService.createMatch(match), HttpStatus.CREATED);
         } catch (Exception e) {
