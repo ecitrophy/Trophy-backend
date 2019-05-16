@@ -5,8 +5,12 @@
  */
 package edu.eci.trophy.bean;
 
+import com.google.gson.JsonObject;
+import edu.eci.trophy.model.GameMatch;
 import edu.eci.trophy.model.Player;
 import edu.eci.trophy.service.TrophyException;
+
+import java.util.Map;
 
 /**
  *
@@ -22,6 +26,10 @@ public interface Api {
      * @return
      * @throws TrophyException
      */
-    public Player getPlayerInfo(String userName) throws TrophyException;
+    Player getPlayerInfo(String userName) throws TrophyException;
+
+    GameMatch isPlaying(String userName) throws TrophyException;
+
+    Map<Long, Map<String, Boolean>> getResults(Integer gameId) throws TrophyException;
 
 }

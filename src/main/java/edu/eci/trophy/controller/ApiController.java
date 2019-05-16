@@ -7,18 +7,16 @@ package edu.eci.trophy.controller;
 
 import edu.eci.trophy.service.TrophyException;
 import edu.eci.trophy.service.ApiService;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
- *
  * @author Jonathan Prieto
  */
 @RestController
@@ -34,8 +32,32 @@ public class ApiController {
         try {
             response = new ResponseEntity<>(apiSer.getPlayer(name.replaceAll("\\s+", "").toLowerCase()), HttpStatus.ACCEPTED);
         } catch (TrophyException ex) {
-            Logger.getLogger(ApiController.class.getName()).log(Level.SEVERE, "Api controller, get player, param: " + name);
-            response = new ResponseEntity<>("Al parecer no existe un jugador con el nombre: " + name, HttpStatus.NOT_FOUND);
+            Logger.getLogger(ApiController.class.getName()).log(Level.SEVERE, "Api controller, get player, param: " + name, ex);
+            response = new ResponseEntity<>("No existe un jugador con el nombre: " + name, HttpStatus.NOT_FOUND);
+        }
+        return response;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/isplaying/{playerName}")
+    public ResponseEntity<?> isPlaying(@PathVariable("playerName") String name) {
+        ResponseEntity<?> response;
+        try {
+            response = new ResponseEntity<>(apiSer.isPlaying(name.replaceAll("\\s+", "").toLowerCase()), HttpStatus.ACCEPTED);
+        } catch (TrophyException ex) {
+            Logger.getLogger(ApiController.class.getName()).log(Level.SEVERE, "Api controller, is playing, param: " + name, ex);
+            response = new ResponseEntity<>("El jugador : " + name + " no esta jugando o no existe", HttpStatus.NOT_FOUND);
+        }
+        return response;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, path = "/results/{gameId}")
+    public ResponseEntity<?> getResults(@PathVariable("gameId") Integer gameId) {
+        ResponseEntity<?> response;
+        try {
+            response = new ResponseEntity<>(apiSer.getResults(gameId), HttpStatus.ACCEPTED);
+        } catch (TrophyException ex) {
+            Logger.getLogger(ApiController.class.getName()).log(Level.SEVERE, "Api controller, get results, param: " + gameId, ex);
+            response = new ResponseEntity<>("La partida : " + gameId + " no existe", HttpStatus.NOT_FOUND);
         }
         return response;
     }
