@@ -6,6 +6,8 @@ import edu.eci.trophy.service.TrophyException;
 import edu.eci.trophy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,15 +17,16 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepo;
 
-//    public UserServiceImpl() {
-//        this.UserMap = new HashMap<>();
-//        try {
-//            this.createUser(new User("JuanJoAndrade", "Juan José Andrade", "juanjo@gmail.com", "qwerty", 1450));
-//            this.createUser(new User("CapoTrophy", "Capo de Trophy", "capo@gmail.com", "qwerty", 999999999));
-//        } catch (TrophyException e) {
-//            e.printStackTrace();
-//        }
-//    }
+
+    /*public UserServiceImpl() {
+        this.UserMap = new HashMap<>();
+        try {
+            this.createUser(new User("JuanJoAndrade", "Juan José Andrade", "juanjo@gmail.com", "qwerty", 1450));
+            this.createUser(new User("CapoTrophy", "Capo de Trophy", "capo@gmail.com", "qwerty", 999999999));
+        } catch (TrophyException e) {
+            e.printStackTrace();
+        }
+    }*/
 
     @Override
     public User getUserByUserName(String userName) {
