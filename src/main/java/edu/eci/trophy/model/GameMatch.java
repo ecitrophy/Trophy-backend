@@ -1,6 +1,5 @@
 package edu.eci.trophy.model;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -10,7 +9,7 @@ public class GameMatch {
 
     private Integer gameId;
     private long gameStartTime;
-    private long gameEnding;
+    private long gameDuration;
     private Map<String, Boolean> players;
 
     public GameMatch() {
@@ -38,12 +37,12 @@ public class GameMatch {
         this.gameStartTime = gameStartTime;
     }
 
-    public long getGameEnding() {
-        return gameEnding;
+    public long getGameDuration() {
+        return gameDuration;
     }
 
-    public void setGameEnding(long gameEnding) {
-        this.gameEnding = gameEnding;
+    public void setGameDuration(long gameDuration) {
+        this.gameDuration = gameDuration;
     }
 
     public Map<String, Boolean> getPlayers() {
@@ -59,7 +58,7 @@ public class GameMatch {
         return "GameMatch{" +
                 "gameId=" + gameId +
                 ", gameStartTime=" + gameStartTime +
-                ", gameEnding=" + gameEnding +
+                ", gameEnding=" + gameDuration +
                 ", players=" + players +
                 '}';
     }
