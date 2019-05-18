@@ -2,6 +2,7 @@ package edu.eci.trophy.controller;
 
 import edu.eci.trophy.model.Game;
 import edu.eci.trophy.model.Match;
+import edu.eci.trophy.model.User;
 import edu.eci.trophy.service.MatchService;
 import edu.eci.trophy.service.TrophyException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,5 +71,29 @@ public class MatchController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PutMapping("/play/{matchId}")
+    public ResponseEntity<?> playMatch(@PathVariable("matchId") String matchId) {
+        ResponseEntity<?> response;
+        try {
+            response = new ResponseEntity<>(matchService.playMatch(matchId), HttpStatus.ACCEPTED);
+        } catch (TrophyException ex) {
+            Logger.getLogger(ApiController.class.getName()).log(Level.SEVERE, "Match controller, play match, param: " + matchId);
+            response = new ResponseEntity<>("La sala : " + matchId + " No existe o aun no puede iniciar", HttpStatus.NOT_FOUND);
+        }
+        return response;
+    }
+
+    @PutMapping("/adduser/{matchId}")
+    public ResponseEntity<?> addUser(@PathVariable("matchId") String matchId, @RequestBody User user) {
+        ResponseEntity<?> response;
+        try {
+            response = new ResponseEntity<>(matchService.addUser(matchId, user), HttpStatus.ACCEPTED);
+        } catch (TrophyException ex) {
+            Logger.getLogger(ApiController.class.getName()).log(Level.SEVERE, "Match controller, add user, param: " + matchId + " - " + user);
+            response = new ResponseEntity<>("No se pudo agregar el usuario : " + user + " en la partida: " + matchId, HttpStatus.NOT_FOUND);
+        }
+        return response;
     }
 }

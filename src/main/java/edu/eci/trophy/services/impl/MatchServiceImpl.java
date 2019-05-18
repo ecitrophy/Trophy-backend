@@ -1,19 +1,15 @@
 package edu.eci.trophy.services.impl;
 
-import edu.eci.trophy.model.Game;
-import edu.eci.trophy.model.Match;
-import edu.eci.trophy.model.MatchStatus;
-import edu.eci.trophy.model.User;
+import edu.eci.trophy.model.*;
 import edu.eci.trophy.persistance.MatchRepository;
+import edu.eci.trophy.service.ApiService;
 import edu.eci.trophy.service.MatchService;
 import edu.eci.trophy.service.TrophyException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Optional;
+import java.sql.Timestamp;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,29 +19,8 @@ public class MatchServiceImpl implements MatchService {
     @Autowired
     MatchRepository matchRepo;
 
-    //private List<Match> matchesList = new ArrayList<>();
-
-    /*public MatchServiceImpl() {
-        List<HashMap<String, String>> bettors = new ArrayList<>();
-
-        HashMap<String, String> bettor = new HashMap<>();
-        bettor.put("username", "test-backend1");
-        bettor.put("bet", "15");
-        HashMap<String, String> bettor2 = new HashMap<>();
-        bettor2.put("username", "test-backend2");
-        bettor2.put("bet", "15");
-
-        HashMap<String, String> bettor3 = new HashMap<>();
-        bettor3.put("username", "test-backend3");
-        bettor3.put("bet", "15");
-
-
-        bettors.add(bettor);
-        bettors.add(bettor2);
-        bettors.add(bettor3);
-
-        this.matchesList.add(new Match("LOL test-backend", Game.LEAGUEOFLEGENDS, 5000, new User("TestUser1", "Test User", "test@trophy.com", "ieti2019"), MatchStatus.OPEN));
-    }*/
+    @Autowired
+    ApiService apiService;
 
     @Override
     public List<Match> getMatchesList() {
@@ -88,5 +63,35 @@ public class MatchServiceImpl implements MatchService {
     public Match createMatch(Match match) {
         matchRepo.save(match);
         return match;
+    }
+
+    @Override
+    public boolean playMatch(String id) throws TrophyException {
+        Match match = getMatchById(id).get();
+        GameMatch gameMatch = apiService.isPlaying(match.getCreator().getBets().get(match.getId()).getPlayer());
+        long gameStartTime = gameMatch.getGameStartTime();
+        if (gameStartTime == 0 || gameStartTime + 300000 <= new Timestamp(System.currentTimeMillis()).getTime()) {
+            throw new TrophyException("La partida aun no ha empezado o ya se vencio el tiempo para hacer apuestas");
+        }
+        List<User> bettors = match.getBettors();
+        Set<String> players = gameMatch.getPlayers().keySet();
+        for (User u : bettors) {
+            String player = u.getBets().get(match.getId()).getPlayer();
+            if (!players.contains(player)) {
+                throw new TrophyException("El jugador: " + player + " No esta en la partida");
+            }
+        }
+        match.setGameMatch(gameMatch);
+        match.setState(MatchStatus.INGAME);
+        matchRepo.save(match);
+        return true;
+    }
+
+    @Override
+    public boolean addUser(String id, User user) throws TrophyException {
+        Match match = getMatchById(id).get();
+        match.getBettors().add(user);
+        matchRepo.save(match);
+        return true;
     }
 }
