@@ -47,7 +47,7 @@ public class STOMPMessagesHandler {
     public synchronized void handleStartEvent(@DestinationVariable String numroom) throws Exception {
         System.out.println("Nuevo usuario ha ingresado a la sala: " + numroom );
         
-        msgt.convertAndSend("/topic/room." + numroom, true);
+        msgt.convertAndSend("/topic/startroom." + numroom, true);
     }
 
 
