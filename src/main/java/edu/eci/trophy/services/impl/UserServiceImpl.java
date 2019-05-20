@@ -57,7 +57,9 @@ public class UserServiceImpl implements UserService {
         if (getUserByUserName(userName) != null || getUserByEmail(userEmail) != null) {
             throw new TrophyException("El usuario con el nombre o correo: " + userName + " - " + userEmail + " ya existe.");
         }
-        userRepo.save(newUser);
+        else{
+            userRepo.save(newUser);
+        }
         return newUser;
     }
 

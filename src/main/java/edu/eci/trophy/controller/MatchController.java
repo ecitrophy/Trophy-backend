@@ -67,9 +67,10 @@ public class MatchController {
     @PostMapping
     public ResponseEntity<?> createMatch(@RequestBody Match match) {
         try {
+            
             return new ResponseEntity<>(matchService.createMatch(match), HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("No se pudo crear la partida " ,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 

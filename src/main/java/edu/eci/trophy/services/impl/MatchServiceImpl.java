@@ -2,9 +2,11 @@ package edu.eci.trophy.services.impl;
 
 import edu.eci.trophy.model.*;
 import edu.eci.trophy.persistance.MatchRepository;
+import edu.eci.trophy.persistance.UserRepository;
 import edu.eci.trophy.service.ApiService;
 import edu.eci.trophy.service.MatchService;
 import edu.eci.trophy.service.TrophyException;
+import edu.eci.trophy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +23,13 @@ public class MatchServiceImpl implements MatchService {
 
     @Autowired
     ApiService apiService;
+    
+    @Autowired
+    UserService userService;
+    
+    @Autowired
+    UserRepository userRepo;
+    
 
     @Override
     public List<Match> getMatchesList() {
@@ -60,8 +69,27 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public Match createMatch(Match match) {
-        matchRepo.save(match);
+    public Match createMatch(Match match) throws TrophyException{
+        //UserBet summoner= match.getCreator().getBets().get("default");
+        //match.getCreator().getBets().remove("default");
+        matchRepo.save(match);   
+        /*if(summoner!=null){
+            try{
+             User creator = userService.getUserByEmail(match.getCreator().getEmail());
+             if(creator.getBets()==null){
+                 
+             }
+             creator.getBets().put(match.getId(), summoner);
+             userRepo.save(creator);
+            }
+            catch(Exception e){
+                throw new TrophyException("No hay nombre de usuario inicial");
+            }   
+        }
+        else{
+            throw new TrophyException("No hay nombre de usuario inicial");
+        }*/
+        
         return match;
     }
 
@@ -90,8 +118,16 @@ public class MatchServiceImpl implements MatchService {
     @Override
     public boolean addUser(String id, User user) throws TrophyException {
         Match match = getMatchById(id).get();
+        for ( User u : match.getBettors()){
+            if (u.getEmail().equals(user.getEmail())) {
+                throw new TrophyException("El usuario con el nombre o correo"+u.getEmail()+" ya existe.");
+            }
+        }
+        
         match.getBettors().add(user);
         matchRepo.save(match);
+        
         return true;
     }
 }
+ 

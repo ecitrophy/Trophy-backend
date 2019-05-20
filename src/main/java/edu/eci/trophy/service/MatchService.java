@@ -16,7 +16,7 @@ public interface MatchService {
 
     Optional<Match> getMatchById(String id) throws TrophyException;
 
-    Match createMatch(Match m);
+    Match createMatch(Match m) throws TrophyException;
 
     boolean playMatch(String id) throws TrophyException;
 
