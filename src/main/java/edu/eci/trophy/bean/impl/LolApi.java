@@ -35,7 +35,7 @@ public class LolApi implements Api {
 
     public LolApi() {
         this.season = 13;
-        this.apiKey = "RGAPI-b0e53c54-bec0-4374-b3fa-7e623aded01e";
+        this.apiKey = "RGAPI-21620ec1-f660-4b38-b3bd-8f1cb01cf58e";
     }
 
     @Override

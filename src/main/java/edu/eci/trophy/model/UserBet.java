@@ -11,10 +11,6 @@ public class UserBet {
     public UserBet() {
     }
 
-    public UserBet(String player, Integer bet) {
-        this.player = player;
-        this.bet = bet;
-    }
     public UserBet( String player, Integer bet) {
         this.player = player;
         this.bet = bet;

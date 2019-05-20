@@ -20,6 +20,6 @@ public interface MatchService {
 
     boolean playMatch(String id) throws TrophyException;
 
-    boolean addUser(String id, User user) throws TrophyException;
+    boolean addUser(String id, User user) throws TrophyException, Exception;
 
 }

@@ -9,6 +9,7 @@ public class Match {
     private String name;
     private Game game;
     private Integer minimumBet;
+    private Integer pot = 0;
     private User creator;
     private MatchStatus state;
     private List<User> bettors = new ArrayList<>();
@@ -59,6 +60,14 @@ public class Match {
         this.minimumBet = minimumBet;
     }
 
+    public Integer getPot() {
+        return pot;
+    }
+
+    public void setPot(Integer pot) {
+        this.pot = pot;
+    }
+
     public User getCreator() {
         return creator;
     }
@@ -106,6 +115,7 @@ public class Match {
                 ", name='" + name + '\'' +
                 ", game=" + game +
                 ", minimumBet=" + minimumBet +
+                ", pot=" + pot +
                 ", creator=" + creator +
                 ", state=" + state +
                 ", bettors=" + bettors +
