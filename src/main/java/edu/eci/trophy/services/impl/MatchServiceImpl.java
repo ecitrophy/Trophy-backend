@@ -12,11 +12,16 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
 public class MatchServiceImpl implements MatchService {
+
+    //    private int nucleosProcesamiento = Runtime.getRuntime().availableProcessors();
+    private ExecutorService es = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     @Autowired
     MatchRepository matchRepo;
@@ -69,27 +74,10 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public Match createMatch(Match match) throws TrophyException{
-        //UserBet summoner= match.getCreator().getBets().get("default");
-        //match.getCreator().getBets().remove("default");
-        matchRepo.save(match);   
-        /*if(summoner!=null){
-            try{
-             User creator = userService.getUserByEmail(match.getCreator().getEmail());
-             if(creator.getBets()==null){
-                 
-             }
-             creator.getBets().put(match.getId(), summoner);
-             userRepo.save(creator);
-            }
-            catch(Exception e){
-                throw new TrophyException("No hay nombre de usuario inicial");
-            }   
-        }
-        else{
-            throw new TrophyException("No hay nombre de usuario inicial");
-        }*/
-        
+    public Match createMatch(Match match) throws TrophyException {
+        apiService.getPlayer(match.getCreator().getBets().get("key").getPlayer());
+        match.getBettors().add(match.getCreator());
+        matchRepo.save(match);
         return match;
     }
 
@@ -98,6 +86,7 @@ public class MatchServiceImpl implements MatchService {
         Match match = getMatchById(id).get();
         GameMatch gameMatch = apiService.isPlaying(match.getCreator().getBets().get(match.getId()).getPlayer());
         long gameStartTime = gameMatch.getGameStartTime();
+        System.out.println(new Timestamp(System.currentTimeMillis()).getTime());
         if (gameStartTime == 0 || gameStartTime + 300000 <= new Timestamp(System.currentTimeMillis()).getTime()) {
             throw new TrophyException("La partida aun no ha empezado o ya se vencio el tiempo para hacer apuestas");
         }
@@ -129,5 +118,6 @@ public class MatchServiceImpl implements MatchService {
         
         return true;
     }
+
 }
  
