@@ -79,11 +79,10 @@ public class MatchServiceImpl implements MatchService {
     public Match createMatch(Match match) throws TrophyException {
         apiService.getPlayer(match.getCreator().getBets().get("default").getPlayer());
         matchRepo.save(match);
-        User usr = match.getCreator();
         String matchId = match.getId();
-        match.setCreator(updateUserBetsId(matchId, usr));
+        match.setCreator(updateUserBetsId(matchId, match.getCreator()));
         match.getBettors().add(match.getCreator());
-        match.setPot(match.getPot() + usr.getBets().get(matchId).getBet());
+        match.setPot(match.getPot() + match.getCreator().getBets().get(matchId).getBet()); // actualizar la info del usuario para no usar default sino el match id.
         matchRepo.save(match);
         return match;
     }
@@ -93,8 +92,8 @@ public class MatchServiceImpl implements MatchService {
         Match match = getMatchById(id).get();
         GameMatch gameMatch = apiService.isPlaying(match.getCreator().getBets().get(match.getId()).getPlayer());
         long gameStartTime = gameMatch.getGameStartTime();
-        System.out.println(new Timestamp(System.currentTimeMillis()).getTime());
-        if (match.getBettors().size() < 2 || gameStartTime == 0 || gameStartTime + 300000 <= new Timestamp(System.currentTimeMillis()).getTime()) {
+        System.out.println(new Timestamp(System.currentTimeMillis()).getTime() + " <= " + gameStartTime + " - " + 300000);//  v
+        if (match.getBettors().size() < 2 || gameStartTime == 0 || gameStartTime + 300000 * 4 <= new Timestamp(System.currentTimeMillis()).getTime()) {
             throw new TrophyException("Cantidad de apostadores no suficiente, la partida aun no ha empezado o ya se vencio el tiempo para hacer apuestas");
         }
         List<User> bettors = match.getBettors();
@@ -121,8 +120,8 @@ public class MatchServiceImpl implements MatchService {
             throw new TrophyException("Su apuesta debe ser mayor o igual a: " + mb);
         }
         for (User u : match.getBettors()) {
-            if (u.getEmail().equals(user.getEmail())) {
-                throw new TrophyException("El usuario con el nombre o correo" + u.getEmail() + " ya existe.");
+            if (u.getEmail() == user.getEmail()) {
+                throw new TrophyException("El usuario con el nombre o correo: " + u.getEmail() + " ya existe.");
             }
 
         }

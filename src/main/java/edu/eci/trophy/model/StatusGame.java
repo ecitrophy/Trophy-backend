@@ -47,7 +47,9 @@ public class StatusGame implements Runnable {
                 }
                 matchUpdated = match;
             } catch (TrophyException e) {
-                Logger.getLogger(MatchServiceImpl.class.getName()).log(Level.INFO, "La partida no ha finalizado aun");
+                Logger.getLogger(MatchServiceImpl.class.getName()).log(Level.INFO, "La partida no ha finalizado aun", e);
+            } catch (Exception exc) {
+                Logger.getLogger(MatchServiceImpl.class.getName()).log(Level.INFO, "La partida no ha finalizado aun", exc);
             }
             if (matchUpdated == null) {
                 try {

@@ -40,6 +40,7 @@ public class LolApi implements Api {
 
     @Override
     public Player getPlayerInfo(String userName) throws TrophyException {
+        userName = userName.replaceAll("\\s+", "").toLowerCase();
         Player player = null;
         try {
             player = playerRepo.findByName(userName);
@@ -74,7 +75,7 @@ public class LolApi implements Api {
             for (int i = 0; i < totalParticipants; i++) {
                 JsonParser jsonParser2 = new JsonParser();
                 JsonObject participantX = (JsonObject) jsonParser2.parse(participants.get(i).toString());
-                players.put(participantX.get("summonerName").getAsString(), false);
+                players.put(participantX.get("summonerName").getAsString().replaceAll("\\s+", "").toLowerCase(), false);
             }
             gameMatch = new GameMatch(jsonObject.get("gameId").getAsInt(), jsonObject.get("gameStartTime").getAsLong(), players);
         } catch (IOException e) {
