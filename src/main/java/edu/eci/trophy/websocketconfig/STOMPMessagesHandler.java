@@ -36,6 +36,19 @@ public class STOMPMessagesHandler {
         
         msgt.convertAndSend("/topic/room." + numroom, userService.getUserByEmail(identifier));
     }
+     /**
+     * Empezar partida
+     *
+     * @param numroom
+     * @param identifier
+     * @throws Exception
+     */
+    @MessageMapping("/startroom.{numroom}")
+    public synchronized void handleStartEvent(@DestinationVariable String numroom) throws Exception {
+        System.out.println("Nuevo usuario ha ingresado a la sala: " + numroom );
+        
+        msgt.convertAndSend("/topic/room." + numroom, true);
+    }
 
 
 
