@@ -16,6 +16,11 @@ public class UserBet {
         this.player = player;
         this.bet = bet;
     }
+    public UserBet( String player, Integer bet) {
+        this.player = player;
+        this.bet = bet;
+        this.state=false;
+    }
 
     public String getId() {
         return id;

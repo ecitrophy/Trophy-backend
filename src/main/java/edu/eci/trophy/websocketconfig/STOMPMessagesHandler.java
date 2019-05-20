@@ -31,7 +31,7 @@ public class STOMPMessagesHandler {
      * @throws Exception
      */
     @MessageMapping("/newplayer.{numroom}")
-    public synchronized void handleJoinEvent(@DestinationVariable int numroom, String identifier) throws Exception {
+    public synchronized void handleJoinEvent(@DestinationVariable String numroom, String identifier) throws Exception {
         System.out.println("Nuevo usuario ha ingresado a la sala: " + numroom +identifier);
         
         msgt.convertAndSend("/topic/room." + numroom, userService.getUserByEmail(identifier));
