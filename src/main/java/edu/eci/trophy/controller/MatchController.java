@@ -67,10 +67,11 @@ public class MatchController {
     @PostMapping
     public ResponseEntity<?> createMatch(@RequestBody Match match) {
         try {
-            
+
             return new ResponseEntity<>(matchService.createMatch(match), HttpStatus.CREATED);
         } catch (Exception e) {
-            return new ResponseEntity<>("No se pudo crear la partida " ,HttpStatus.INTERNAL_SERVER_ERROR);
+            Logger.getLogger(ApiController.class.getName()).log(Level.SEVERE, "Match controller Class, get match by id method, param: " + match, e);
+            return new ResponseEntity<>("No se pudo crear la partida ", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -80,7 +81,10 @@ public class MatchController {
         try {
             response = new ResponseEntity<>(matchService.playMatch(matchId), HttpStatus.ACCEPTED);
         } catch (TrophyException ex) {
-            Logger.getLogger(ApiController.class.getName()).log(Level.SEVERE, "Match controller, play match, param: " + matchId);
+            Logger.getLogger(ApiController.class.getName()).log(Level.SEVERE, "Match controller Class, play match method, param: " + matchId, ex);
+            response = new ResponseEntity<>("La sala : " + matchId + " No existe o aun no puede iniciar", HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            Logger.getLogger(ApiController.class.getName()).log(Level.SEVERE, "Match controller Class, play match method, param: " + matchId, e);
             response = new ResponseEntity<>("La sala : " + matchId + " No existe o aun no puede iniciar", HttpStatus.NOT_FOUND);
         }
         return response;
@@ -92,7 +96,10 @@ public class MatchController {
         try {
             response = new ResponseEntity<>(matchService.addUser(matchId, user), HttpStatus.ACCEPTED);
         } catch (TrophyException ex) {
-            Logger.getLogger(ApiController.class.getName()).log(Level.SEVERE, "Match controller, add user, param: " + matchId + " - " + user);
+            Logger.getLogger(MatchController.class.getName()).log(Level.SEVERE, "Match controller, add user, param: " + matchId + " - " + user, ex);
+            response = new ResponseEntity<>("No se pudo agregar el usuario : " + user + " en la partida: " + matchId, HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            Logger.getLogger(MatchController.class.getName()).log(Level.SEVERE, "Match controller, add user, param: " + matchId + " - " + user, e);
             response = new ResponseEntity<>("No se pudo agregar el usuario : " + user + " en la partida: " + matchId, HttpStatus.NOT_FOUND);
         }
         return response;

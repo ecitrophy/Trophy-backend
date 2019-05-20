@@ -12,24 +12,31 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Service
 public class MatchServiceImpl implements MatchService {
 
+
+    //        private int nucleosProcesamiento = Runtime.getRuntime().availableProcessors();
+    private ExecutorService es = Executors.newFixedThreadPool(10);
+
+
     @Autowired
     MatchRepository matchRepo;
 
     @Autowired
+    UserRepository userRepo;
+
+    @Autowired
     ApiService apiService;
-    
+
     @Autowired
     UserService userService;
-    
-    @Autowired
-    UserRepository userRepo;
-    
+
 
     @Override
     public List<Match> getMatchesList() {
@@ -69,27 +76,15 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public Match createMatch(Match match) throws TrophyException{
-        //UserBet summoner= match.getCreator().getBets().get("default");
-        //match.getCreator().getBets().remove("default");
-        matchRepo.save(match);   
-        /*if(summoner!=null){
-            try{
-             User creator = userService.getUserByEmail(match.getCreator().getEmail());
-             if(creator.getBets()==null){
-                 
-             }
-             creator.getBets().put(match.getId(), summoner);
-             userRepo.save(creator);
-            }
-            catch(Exception e){
-                throw new TrophyException("No hay nombre de usuario inicial");
-            }   
-        }
-        else{
-            throw new TrophyException("No hay nombre de usuario inicial");
-        }*/
-        
+    public Match createMatch(Match match) throws TrophyException {
+        apiService.getPlayer(match.getCreator().getBets().get("default").getPlayer());
+        matchRepo.save(match);
+        User usr = match.getCreator();
+        String matchId = match.getId();
+        match.setCreator(updateUserBetsId(matchId, usr));
+        match.getBettors().add(match.getCreator());
+        match.setPot(match.getPot() + usr.getBets().get(matchId).getBet());
+        matchRepo.save(match);
         return match;
     }
 
@@ -98,8 +93,9 @@ public class MatchServiceImpl implements MatchService {
         Match match = getMatchById(id).get();
         GameMatch gameMatch = apiService.isPlaying(match.getCreator().getBets().get(match.getId()).getPlayer());
         long gameStartTime = gameMatch.getGameStartTime();
-        if (gameStartTime == 0 || gameStartTime + 300000 <= new Timestamp(System.currentTimeMillis()).getTime()) {
-            throw new TrophyException("La partida aun no ha empezado o ya se vencio el tiempo para hacer apuestas");
+        System.out.println(new Timestamp(System.currentTimeMillis()).getTime());
+        if (match.getBettors().size() < 2 || gameStartTime == 0 || gameStartTime + 300000 <= new Timestamp(System.currentTimeMillis()).getTime()) {
+            throw new TrophyException("Cantidad de apostadores no suficiente, la partida aun no ha empezado o ya se vencio el tiempo para hacer apuestas");
         }
         List<User> bettors = match.getBettors();
         Set<String> players = gameMatch.getPlayers().keySet();
@@ -112,22 +108,41 @@ public class MatchServiceImpl implements MatchService {
         match.setGameMatch(gameMatch);
         match.setState(MatchStatus.INGAME);
         matchRepo.save(match);
+        es.execute(new StatusGame(match));
         return true;
     }
 
     @Override
-    public boolean addUser(String id, User user) throws TrophyException {
+    public boolean addUser(String id, User user) throws TrophyException, Exception {
         Match match = getMatchById(id).get();
-        for ( User u : match.getBettors()){
-            if (u.getEmail().equals(user.getEmail())) {
-                throw new TrophyException("El usuario con el nombre o correo"+u.getEmail()+" ya existe.");
-            }
+        Integer mb = match.getMinimumBet();
+        Integer userBet = user.getBets().get("default").getBet();
+        if (userBet < mb) {
+            throw new TrophyException("Su apuesta debe ser mayor o igual a: " + mb);
         }
-        
+        for (User u : match.getBettors()) {
+            if (u.getEmail().equals(user.getEmail())) {
+                throw new TrophyException("El usuario con el nombre o correo" + u.getEmail() + " ya existe.");
+            }
+
+        }
+        user = updateUserBetsId(id, user);
         match.getBettors().add(user);
+        match.setPot(match.getPot() + userBet);
         matchRepo.save(match);
-        
         return true;
     }
+
+    private User updateUserBetsId(String id, User u) throws TrophyException {
+        Map<String, UserBet> userBets = u.getBets();
+        UserBet ub = userBets.remove("default");
+        ub.setId(id);
+        u = userService.getUserByEmail(u.getEmail());
+        userBets = u.getBets();
+        userBets.put(id, ub);
+        userRepo.save(u);
+        return u;
+    }
+
 }
  

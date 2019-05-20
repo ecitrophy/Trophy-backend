@@ -11,15 +11,10 @@ public class UserBet {
     public UserBet() {
     }
 
-    public UserBet(String id, String player, Integer bet) {
-        this.id = id;
+    public UserBet(String player, Integer bet) {
         this.player = player;
         this.bet = bet;
-    }
-    public UserBet( String player, Integer bet) {
-        this.player = player;
-        this.bet = bet;
-        this.state=false;
+        this.state = false;
     }
 
     public String getId() {
