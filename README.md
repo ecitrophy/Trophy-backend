@@ -1,19 +1,12 @@
-# Trophy-backend
-
-heroku: https://gentle-wave-71675.herokuapp.com/
-
-# Endpoints
-
-GET /matcheslist
-
-GET /matcheslist/:id
-
-GET /api/user/:id
-
-GET /apilol/{username}
-
-
-POST /user/login
-
-POST /matcheslist
-
+# Escuela Colombiana de Ingeniería Julio Garavito
+## Innovación y Emprendimiento con TI
+## Trophy-backend
+- ### Juan José Andrade
+- ### Nicolas Gomez
+- ### Jonathan Prieto
+- ### Sebastián Reyes
+---
+## Continuous integration
+- ### [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://gentle-wave-71675.herokuapp.com/)
+---
+![](images/TropyLogo.png)
